@@ -32,6 +32,7 @@
     { name: 'Home', url: '/' },
     { name: 'Projects', url: '/projects' },
     { name: 'Writeups', url: '/writeups' },
+    { name: 'Homelab', url: '/homelab' },
     { name: 'About', url: '/about' }
   ];
 
