@@ -2,29 +2,25 @@
   import { onMount } from 'svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
-  import homelabsData from '$lib/../data/homelabs.json';
 
-  let homelabs: typeof homelabsData = [];
+  let homelabs: any[] = [];
   let loading = true;
   let selectedCategory = 'all';
+  let categories: string[] = ['all'];
 
-  // Get unique categories
-  const categories = ['all', ...new Set(homelabsData.map(h => h.category))];
-
-  // Check which homelabs have markdown content and filter them
+  // Load homelabs from API (automatically parses frontmatter from markdown files)
   onMount(async () => {
-    const homelabsWithContent = await Promise.all(
-      homelabsData.map(async (homelab) => {
-        try {
-          const response = await fetch(`/homelab-content/${homelab.slug}.md`);
-          return response.ok ? homelab : null;
-        } catch {
-          return null;
-        }
-      })
-    );
-
-    homelabs = homelabsWithContent.filter(h => h !== null) as typeof homelabsData;
+    try {
+      const response = await fetch('/api/homelabs');
+      if (response.ok) {
+        homelabs = await response.json();
+        // Extract unique categories
+        const uniqueCategories = [...new Set(homelabs.map(h => h.category))];
+        categories = ['all', ...uniqueCategories];
+      }
+    } catch (error) {
+      console.error('Error loading homelabs:', error);
+    }
     loading = false;
   });
 

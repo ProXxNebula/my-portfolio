@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
-  import homelabs from '../../../data/homelabs.json';
   import MarkdownRenderer from '$lib/components/MarkdownRenderer.svelte';
+  import { parseFrontmatter } from '$lib/utils/frontmatter';
 
   $: slug = $page.params.slug;
-  $: homelab = homelabs.find(h => h.slug === slug);
+  let homelab: any = null;
 
   let markdownContent = '';
   let loading = true;
@@ -15,22 +15,28 @@
   let showTableOfContents = false;
 
   onMount(async () => {
-    if (homelab) {
-      try {
-        const response = await fetch(`/homelab-content/${homelab.slug}.md`);
-        if (response.ok) {
-          markdownContent = await response.text();
+    try {
+      const response = await fetch(`/homelab-content/${slug}.md`);
+      if (response.ok) {
+        const rawMarkdown = await response.text();
+        const parsed = parseFrontmatter(rawMarkdown);
+
+        if (parsed) {
+          homelab = { slug, ...parsed.frontmatter };
+          markdownContent = parsed.content;
           contentExists = true;
-          generateTableOfContents(markdownContent);
+          generateTableOfContents(parsed.content);
           setupScrollListeners();
         } else {
           contentExists = false;
         }
-      } catch (error) {
+      } else {
         contentExists = false;
       }
-      loading = false;
+    } catch (error) {
+      contentExists = false;
     }
+    loading = false;
   });
 
   function generateTableOfContents(markdown: string) {

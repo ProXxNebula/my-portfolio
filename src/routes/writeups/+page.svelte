@@ -3,10 +3,9 @@
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
   import WriteupCard from '$lib/components/WriteupCard.svelte';
-  import writeupsData from '$lib/../data/writeups.json';
 
-  let writeups: typeof writeupsData = [];
-  let filteredWriteups: typeof writeupsData = [];
+  let writeups: any[] = [];
+  let filteredWriteups: any[] = [];
   let selectedPlatform = 'all';
   let selectedDifficulty = 'all';
   let selectedCategory = 'all';
@@ -14,20 +13,16 @@
   let sortBy = 'date';
   let loading = true;
 
-  // Check which writeups have markdown content and filter them
+  // Load writeups from API (automatically parses frontmatter from markdown files)
   onMount(async () => {
-    const writeupsWithContent = await Promise.all(
-      writeupsData.map(async (writeup) => {
-        try {
-          const response = await fetch(`/writeups-content/${writeup.slug}.md`);
-          return response.ok ? writeup : null;
-        } catch {
-          return null;
-        }
-      })
-    );
-
-    writeups = writeupsWithContent.filter(w => w !== null) as typeof writeupsData;
+    try {
+      const response = await fetch('/api/writeups');
+      if (response.ok) {
+        writeups = await response.json();
+      }
+    } catch (error) {
+      console.error('Error loading writeups:', error);
+    }
     loading = false;
   });
 
@@ -71,7 +66,7 @@
       const matchesSearch = (
         writeup.title.toLowerCase().includes(query) ||
         writeup.description.toLowerCase().includes(query) ||
-        writeup.tags.some(tag => tag.toLowerCase().includes(query))
+        writeup.tags.some((tag: string) => tag.toLowerCase().includes(query))
       );
 
       return matchesPlatform && matchesDifficulty && matchesCategory && matchesSearch;

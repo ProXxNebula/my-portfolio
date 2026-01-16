@@ -1,3 +1,14 @@
+---
+title: "HTB: Keeper - Easy Linux Box"
+description: "Comprehensive walkthrough of the Keeper machine from HackTheBox. Initial foothold gained through default credentials on Request Tracker installation, followed by KeePass database exploitation. Covers credential harvesting, KeePass vulnerability CVE-2023-32784, and SSH key extraction for root access."
+difficulty: "Easy"
+platform: "HackTheBox"
+category: "Linux"
+tags: ["htb", "linux", "privesc", "webapp", "keepass", "cve"]
+date: "2025-12-10"
+featured: true
+---
+
 ## Overview
 
 Keeper is an Easy-rated Linux machine from HackTheBox that involves exploiting default credentials and a KeePass vulnerability.

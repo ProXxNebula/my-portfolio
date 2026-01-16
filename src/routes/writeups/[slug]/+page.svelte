@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
-  import writeups from '../../../data/writeups.json';
   import MarkdownRenderer from '$lib/components/MarkdownRenderer.svelte';
+  import { parseFrontmatter } from '$lib/utils/frontmatter';
 
   $: slug = $page.params.slug;
-  $: writeup = writeups.find(w => w.slug === slug);
+  let writeup: any = null;
 
   let markdownContent = '';
   let loading = true;
@@ -16,24 +16,30 @@
   let showTableOfContents = false;
 
   onMount(async () => {
-    if (writeup) {
-      try {
-        const response = await fetch(`/writeups-content/${writeup.slug}.md`);
-        if (response.ok) {
-          markdownContent = await response.text();
+    try {
+      const response = await fetch(`/writeups-content/${slug}.md`);
+      if (response.ok) {
+        const rawMarkdown = await response.text();
+        const parsed = parseFrontmatter(rawMarkdown);
+
+        if (parsed) {
+          writeup = { slug, ...parsed.frontmatter };
+          markdownContent = parsed.content;
           contentExists = true;
           // Generate table of contents
-          generateTableOfContents(markdownContent);
+          generateTableOfContents(parsed.content);
           // Setup scroll listeners
           setupScrollListeners();
         } else {
           contentExists = false;
         }
-      } catch (error) {
+      } else {
         contentExists = false;
       }
-      loading = false;
+    } catch (error) {
+      contentExists = false;
     }
+    loading = false;
   });
 
   function generateTableOfContents(markdown: string) {

@@ -1,3 +1,14 @@
+---
+title: "Proxmox VE Virtualization Setup"
+description: "Complete guide to setting up Proxmox Virtual Environment for my homelab infrastructure"
+category: "Virtualization"
+difficulty: "intermediate"
+hardware: "Dell PowerEdge R720"
+services: ["Proxmox VE", "LXC Containers", "Virtual Machines"]
+tags: ["proxmox", "virtualization", "infrastructure"]
+publishedDate: "2026-01-15"
+---
+
 # Proxmox VE Virtualization Setup
 
 ## Overview

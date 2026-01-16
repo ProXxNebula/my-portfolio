@@ -1,3 +1,14 @@
+---
+title: "Self-Hosted Docker Compose Stack"
+description: "Overview of my containerized services running on Docker with docker-compose orchestration"
+category: "Containers"
+difficulty: "beginner"
+hardware: "Ubuntu Server 22.04 LTS"
+services: ["Portainer", "Traefik", "Nextcloud", "Jellyfin", "Vaultwarden"]
+tags: ["docker", "containers", "self-hosted"]
+publishedDate: "2026-01-10"
+---
+
 # Self-Hosted Docker Compose Stack
 
 ## Introduction
