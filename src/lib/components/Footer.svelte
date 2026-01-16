@@ -4,27 +4,9 @@
   const socialLinks = [
     {
       name: 'GitHub',
-      url: 'https://github.com/yourusername',
+      url: 'https://github.com/ProXxNebula',
       icon: 'github',
-      username: '@yourusername'
-    },
-    {
-      name: 'LinkedIn',
-      url: 'https://linkedin.com/in/yourusername',
-      icon: 'linkedin',
-      username: '/in/yourname'
-    },
-    {
-      name: 'Twitter',
-      url: 'https://twitter.com/yourusername',
-      icon: 'twitter',
-      username: '@yourhandle'
-    },
-    {
-      name: 'Email',
-      url: 'mailto:your.email@example.com',
-      icon: 'mail',
-      username: 'your.email@example.com'
+      username: '@ProXxNebula'
     }
   ];
 
@@ -37,10 +19,7 @@
   ];
 
   const resources = [
-    { name: 'GitHub', url: 'https://github.com/yourusername' },
-    { name: 'LinkedIn', url: 'https://linkedin.com/in/yourusername' },
-    { name: 'Resume', url: '/resume.pdf' },
-    { name: 'Contact', url: '#contact' }
+    { name: 'GitHub', url: 'https://github.com/ProXxNebula' }
   ];
 </script>
 
@@ -52,10 +31,22 @@
       <div class="footer-section brand-section">
         <div class="footer-brand">
           <div class="brand-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-              <polyline points="2 17 12 22 22 17"></polyline>
-              <polyline points="2 12 12 17 22 12"></polyline>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <!-- Server Rack -->
+              <rect class="server-unit" x="4" y="3" width="16" height="5" rx="1"></rect>
+              <rect class="server-unit" x="4" y="9.5" width="16" height="5" rx="1"></rect>
+              <rect class="server-unit" x="4" y="16" width="16" height="5" rx="1"></rect>
+              <!-- LED Indicators -->
+              <circle class="led" cx="7" cy="5.5" r="0.8" fill="currentColor"></circle>
+              <circle class="led" cx="7" cy="12" r="0.8" fill="currentColor"></circle>
+              <circle class="led" cx="7" cy="18.5" r="0.8" fill="currentColor"></circle>
+              <!-- Ventilation Slots -->
+              <line class="vent" x1="12" y1="4" x2="18" y2="4" stroke-width="1"></line>
+              <line class="vent" x1="12" y1="6" x2="18" y2="6" stroke-width="1"></line>
+              <line class="vent" x1="12" y1="10.5" x2="18" y2="10.5" stroke-width="1"></line>
+              <line class="vent" x1="12" y1="12.5" x2="18" y2="12.5" stroke-width="1"></line>
+              <line class="vent" x1="12" y1="17" x2="18" y2="17" stroke-width="1"></line>
+              <line class="vent" x1="12" y1="19" x2="18" y2="19" stroke-width="1"></line>
             </svg>
           </div>
           <div class="brand-text">
@@ -237,6 +228,20 @@
     align-items: center;
     justify-content: center;
     color: var(--color-bg-primary);
+  }
+
+  /* Server Rack LED Animation */
+  .brand-icon .led {
+    animation: ledPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes ledPulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
   }
 
   .brand-text {

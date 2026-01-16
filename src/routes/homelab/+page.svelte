@@ -21,7 +21,7 @@
         Home<span class="text-gradient">lab</span>
       </h1>
       <p class="page-subtitle">
-        Infrastructure, experiments, and self-hosted services
+        Detailed documentation of my homelab setup, infrastructure, and experiments
       </p>
     </div>
   </section>
