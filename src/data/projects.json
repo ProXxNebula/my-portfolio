@@ -7,49 +7,5 @@
     "tags": ["homelab", "proxmox", "docker", "networking", "automation"],
     "date": "2025-12-15",
     "featured": true
-  },
-  {
-    "id": 2,
-    "title": "Security Automation Framework",
-    "description": "Comprehensive Python-based security automation suite for penetration testing workflows. Features automated vulnerability scanning with Nmap/Nessus integration, intelligent log parsing and anomaly detection, custom exploit development framework, and multi-threaded credential testing with rate limiting.",
-    "githubUrl": "https://github.com/yourusername/security-automation",
-    "demoUrl": "https://security-tools-demo.netlify.app",
-    "tags": ["python", "automation", "security", "pentesting", "api"],
-    "date": "2025-11-20",
-    "featured": true
-  },
-  {
-    "id": 3,
-    "title": "FastScan - Network Discovery Tool",
-    "description": "High-performance asynchronous network scanner written in Go. Implements TCP SYN scanning, service version detection, OS fingerprinting, and supports multiple output formats (JSON, XML, CSV). Features intelligent rate limiting and stealth scanning capabilities with customizable timeout and retry logic.",
-    "githubUrl": "https://github.com/yourusername/fastscan",
-    "tags": ["golang", "networking", "cli", "security", "scanning"],
-    "date": "2025-10-05"
-  },
-  {
-    "id": 4,
-    "title": "CTF Challenge Platform",
-    "description": "Full-stack web application for hosting Capture The Flag competitions. Built with SvelteKit frontend and Node.js/Express backend. Features real-time scoreboard updates via WebSockets, Docker-based challenge isolation, automated flag validation, team management, and comprehensive admin dashboard with analytics.",
-    "githubUrl": "https://github.com/yourusername/ctf-platform",
-    "demoUrl": "https://ctf-demo.vercel.app",
-    "tags": ["sveltekit", "nodejs", "docker", "websockets", "fullstack"],
-    "date": "2025-09-12",
-    "featured": true
-  },
-  {
-    "id": 5,
-    "title": "Malware Analysis Sandbox",
-    "description": "Automated malware analysis environment using QEMU/KVM virtualization. Implements behavioral analysis, network traffic capture with packet inspection, API call monitoring via hooking, memory forensics integration, and generates comprehensive analysis reports with IOC extraction and YARA rule generation.",
-    "githubUrl": "https://github.com/yourusername/malware-sandbox",
-    "tags": ["python", "malware", "analysis", "virtualization", "forensics"],
-    "date": "2025-08-28"
-  },
-  {
-    "id": 6,
-    "title": "Cloud Security Posture Scanner",
-    "description": "Multi-cloud security assessment tool for AWS, Azure, and GCP. Scans for misconfigurations, exposed credentials, overly permissive IAM policies, unencrypted storage, and compliance violations against CIS benchmarks. Generates prioritized remediation recommendations with Terraform/CloudFormation fix templates.",
-    "githubUrl": "https://github.com/yourusername/cloud-security-scanner",
-    "tags": ["aws", "azure", "gcp", "security", "compliance", "iac"],
-    "date": "2025-07-19"
   }
 ]
