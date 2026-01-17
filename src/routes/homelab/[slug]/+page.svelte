@@ -185,13 +185,6 @@
     <!-- Header Section -->
     <header class="homelab-header">
       <div class="container">
-        <a href="/homelab" class="back-link">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          Back to Homelab
-        </a>
-
         <div class="header-content">
           <div class="header-meta">
             <span class="category-badge">
@@ -551,23 +544,6 @@
     border-bottom: 1px solid var(--color-border-default);
     padding: 2rem 0 3rem;
     transition: opacity 0.3s ease;
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-text-tertiary);
-    text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-    transition: all var(--transition-base);
-  }
-
-  .back-link:hover {
-    color: var(--color-accent-primary-light);
-    gap: 0.75rem;
   }
 
   .header-content {

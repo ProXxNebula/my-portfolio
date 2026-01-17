@@ -9,6 +9,38 @@
   let categories: string[] = ['all'];
   let visible = false;
 
+  // Pagination
+  let currentPage = 1;
+  const itemsPerPage = 9;
+  $: totalPages = Math.ceil(filteredHomelabs.length / itemsPerPage);
+  $: paginatedHomelabs = filteredHomelabs.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  function goToPage(page: number) {
+    if (page >= 1 && page <= totalPages) {
+      currentPage = page;
+      document.querySelector('.content-section')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function getVisiblePages(current: number, total: number): (number | string)[] {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    if (current <= 3) {
+      return [1, 2, 3, 4, '...', total];
+    }
+
+    if (current >= total - 2) {
+      return [1, '...', total - 3, total - 2, total - 1, total];
+    }
+
+    return [1, '...', current - 1, current, current + 1, '...', total];
+  }
+
   // Load homelabs from API (automatically parses frontmatter from markdown files)
   onMount(async () => {
     visible = true;
@@ -26,9 +58,16 @@
     loading = false;
   });
 
-  $: filteredHomelabs = selectedCategory === 'all'
-    ? homelabs
-    : homelabs.filter(h => h.category === selectedCategory);
+  $: {
+    filteredHomelabs = selectedCategory === 'all'
+      ? homelabs
+      : homelabs.filter(h => h.category === selectedCategory);
+
+    // Reset to page 1 when filters change
+    currentPage = 1;
+  }
+
+  let filteredHomelabs: any[] = [];
 
   function getDifficultyColor(difficulty: string): string {
     switch (difficulty) {
@@ -142,7 +181,7 @@
 
         <!-- Homelab Grid -->
         <div class="homelab-grid">
-          {#each filteredHomelabs as homelab, i}
+          {#each paginatedHomelabs as homelab, i}
             <a href="/homelab/{homelab.slug}" class="homelab-card" style="animation-delay: {i * 0.1}s">
               <div class="card-glow"></div>
               <div class="card-border"></div>
@@ -197,6 +236,55 @@
             </a>
           {/each}
         </div>
+
+        <!-- Pagination -->
+        {#if totalPages > 1}
+          <div class="pagination">
+            <div class="pagination-info">
+              Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredHomelabs.length)} of {filteredHomelabs.length}
+            </div>
+
+            <div class="pagination-controls">
+              <button
+                class="pagination-btn nav-btn"
+                on:click={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+              </button>
+
+              <div class="pagination-pages">
+                {#each getVisiblePages(currentPage, totalPages) as page}
+                  {#if page === '...'}
+                    <span class="pagination-ellipsis">...</span>
+                  {:else}
+                    <button
+                      class="pagination-btn page-btn"
+                      class:active={currentPage === page}
+                      on:click={() => goToPage(Number(page))}
+                    >
+                      {page}
+                    </button>
+                  {/if}
+                {/each}
+              </div>
+
+              <button
+                class="pagination-btn nav-btn"
+                on:click={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        {/if}
       {/if}
     </div>
   </section>
@@ -930,5 +1018,99 @@
     .badge-text {
       font-size: 0.65rem;
     }
+
+    .pagination {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .pagination-pages {
+      gap: 0.25rem;
+    }
+
+    .pagination-btn.page-btn {
+      width: 36px;
+      height: 36px;
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Pagination Styles */
+  .pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(139, 92, 246, 0.15);
+  }
+
+  .pagination-info {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pagination-pages {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all var(--transition-base);
+  }
+
+  .pagination-btn.nav-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+  }
+
+  .pagination-btn.page-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+    border-color: var(--color-accent-blue);
+    color: var(--color-accent-blue-light);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+  }
+
+  .pagination-btn.active {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: var(--color-accent-blue);
+    color: var(--color-accent-blue-light);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+  }
+
+  .pagination-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .pagination-ellipsis {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    padding: 0 0.5rem;
   }
 </style>

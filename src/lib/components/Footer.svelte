@@ -694,13 +694,13 @@
 
   /* Scroll to Top Button */
   .scroll-top {
-    position: absolute;
-    top: -24px;
+    position: fixed;
+    bottom: 2rem;
     right: 2rem;
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
-    border: 1px solid rgba(139, 92, 246, 0.4);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(6, 182, 212, 0.3));
+    border: 1px solid rgba(139, 92, 246, 0.5);
     color: var(--color-accent-primary-light);
     border-radius: var(--radius-md);
     cursor: pointer;
@@ -709,6 +709,9 @@
     justify-content: center;
     transition: all var(--transition-base);
     overflow: hidden;
+    z-index: 90;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .scroll-glow {
@@ -779,6 +782,7 @@
 
     .scroll-top {
       right: 1.5rem;
+      bottom: 1.5rem;
     }
 
     .glow-orb-1 {

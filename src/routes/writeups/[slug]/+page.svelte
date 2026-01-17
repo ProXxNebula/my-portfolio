@@ -185,13 +185,6 @@
     <!-- Header Section -->
     <header class="writeup-header">
       <div class="container">
-        <a href="/writeups" class="back-link">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          Back to Writeups
-        </a>
-
         <div class="header-content">
           <div class="header-meta">
             <span class="platform-badge">
@@ -489,47 +482,12 @@
     padding: 0 2rem;
   }
 
-  /* Reading Progress Bar */
-  .reading-progress-container {
-    position: fixed;
-    top: 73px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--color-bg-tertiary);
-    z-index: 100;
-  }
-
-  .reading-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
-    transition: width 0.1s ease-out;
-    box-shadow: 0 0 10px var(--color-accent-primary);
-  }
-
   /* Header Section */
   .writeup-header {
     background: linear-gradient(180deg, rgba(139, 92, 246, 0.03) 0%, transparent 100%);
     border-bottom: 1px solid var(--color-border-default);
     padding: 2rem 0 3rem;
     transition: opacity 0.3s ease;
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-text-tertiary);
-    text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-    transition: all var(--transition-base);
-  }
-
-  .back-link:hover {
-    color: var(--color-accent-primary-light);
-    gap: 0.75rem;
   }
 
   .header-content {
