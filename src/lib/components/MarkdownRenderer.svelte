@@ -235,50 +235,91 @@
   }
 
   .markdown-content :global(pre) {
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border-default);
+    position: relative;
+    background: linear-gradient(135deg, #0d0d14 0%, #12121a 100%);
+    border: 1px solid rgba(139, 92, 246, 0.25);
     border-radius: var(--radius-lg);
-    padding: 1.75rem;
-    overflow-x: auto;
+    padding: 0;
+    overflow: hidden;
     margin: 2rem 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 0 40px rgba(139, 92, 246, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  /* Code block header bar */
+  .markdown-content :global(pre)::before {
+    content: '';
+    display: block;
+    height: 40px;
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.12), rgba(6, 182, 212, 0.08));
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  }
+
+  /* Terminal dots */
+  .markdown-content :global(pre)::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    width: 12px;
+    height: 12px;
+    background: #ff5f57;
+    border-radius: 50%;
+    box-shadow:
+      20px 0 0 #ffbd2e,
+      40px 0 0 #28ca42;
   }
 
   .markdown-content :global(pre code) {
+    display: block;
     background: transparent;
     border: none;
-    padding: 0;
-    font-size: 0.9375rem;
-    color: var(--color-text-secondary);
-    line-height: 1.8;
+    padding: 1.5rem 1.75rem 1.75rem;
+    font-size: 0.875rem;
+    color: #e4e4ef;
+    line-height: 1.75;
+    overflow-x: auto;
   }
 
-  /* Syntax highlighting colors */
+  :root[data-theme="light"] .markdown-content :global(pre) {
+    background: linear-gradient(135deg, #1a1a2e 0%, #1e1e30 100%);
+  }
+
+  /* Syntax highlighting colors - Cyberpunk/VS Code Dark+ inspired */
   .markdown-content :global(.keyword) {
-    color: var(--color-accent-primary-light);
-    font-weight: 600;
+    color: #c792ea;
+    font-weight: 500;
   }
 
   .markdown-content :global(.string) {
-    color: var(--color-accent-secondary-light);
+    color: #a5d6ff;
   }
 
   .markdown-content :global(.comment) {
-    color: var(--color-text-tertiary);
+    color: #6a737d;
     font-style: italic;
-    opacity: 0.8;
   }
 
   .markdown-content :global(.function) {
-    color: #f59e0b;
+    color: #dcdcaa;
   }
 
   .markdown-content :global(.property) {
-    color: #ec4899;
+    color: #f472b6;
   }
 
   .markdown-content :global(.flag) {
-    color: #10b981;
+    color: #4ade80;
+  }
+
+  .markdown-content :global(.number) {
+    color: #f97316;
+  }
+
+  .markdown-content :global(.variable) {
+    color: #9cdcfe;
   }
 
   .markdown-content :global(ul),

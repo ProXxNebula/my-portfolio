@@ -759,14 +759,32 @@
 
   /* Article Content */
   .writeup-content {
+    position: relative;
     background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border-default);
+    border: 1px solid rgba(139, 92, 246, 0.15);
     border-radius: var(--radius-lg);
-    padding: 3.5rem;
+    padding: 3rem 4rem;
     min-height: 60vh;
-    max-width: 75ch;
+    max-width: 900px;
     margin: 0 auto;
     line-height: 1.8;
+    box-shadow:
+      0 4px 25px rgba(0, 0, 0, 0.2),
+      0 0 50px rgba(139, 92, 246, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Gradient border effect */
+  .writeup-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary), var(--color-accent-primary));
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    opacity: 0.8;
   }
 
   .spinner {
