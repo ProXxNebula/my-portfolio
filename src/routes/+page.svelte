@@ -311,7 +311,7 @@
           Let's connect and build something secure together.
         </p>
         <div class="cta-actions">
-          <a href="https://github.com/zeratul" target="_blank" rel="noopener noreferrer" class="cyber-btn primary">
+          <a href="https://github.com/ProXxNebula" target="_blank" rel="noopener noreferrer" class="cyber-btn primary">
             <span class="btn-bg"></span>
             <span class="btn-content">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">

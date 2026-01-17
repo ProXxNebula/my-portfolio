@@ -29,12 +29,12 @@
   --color-border-muted: #1f1f2a;
   --color-border-emphasis: #8b5cf6;
 
-  /* Colors - Text */
-  --color-text-primary: #e4e4f1;
-  --color-text-secondary: #c4c4d6;
-  --color-text-tertiary: #8585a3;
-  --color-text-muted: #5c5c75;
-  --color-text-disabled: #3a3a4a;
+  /* Colors - Text (Enhanced Contrast) */
+  --color-text-primary: #f0f0ff;
+  --color-text-secondary: #d4d4e8;
+  --color-text-tertiary: #a8a8c0;
+  --color-text-muted: #7878a0;
+  --color-text-disabled: #4a4a6a;
 
   /* Colors - Accent - Purple & Cyan theme */
   --color-accent-primary: #8b5cf6;
@@ -68,12 +68,12 @@
   --color-border-muted: #ebe9f2;
   --color-border-emphasis: #7c3aed;
 
-  /* Colors - Text */
-  --color-text-primary: #1a1625;
-  --color-text-secondary: #3d3751;
-  --color-text-tertiary: #6b6780;
-  --color-text-muted: #9791ab;
-  --color-text-disabled: #c5c1d4;
+  /* Colors - Text (Enhanced Contrast) */
+  --color-text-primary: #0f0a1a;
+  --color-text-secondary: #2d2645;
+  --color-text-tertiary: #524a6a;
+  --color-text-muted: #7a7290;
+  --color-text-disabled: #a8a0c0;
 
   /* Colors - Accent - Purple & Cyan theme */
   --color-accent-primary: #7c3aed;
