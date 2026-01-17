@@ -1,27 +1,48 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
   import projectsData from '$lib/../data/projects.json';
-  import writeupsData from '$lib/../data/writeups.json';
 
   let visible = false;
+  let featuredWriteups: any[] = [];
+  let writeupsCount = 0;
 
-  onMount(() => {
+  onMount(async () => {
     visible = true;
+
+    // Fetch writeups from API
+    try {
+      const response = await fetch('/api/writeups');
+      if (response.ok) {
+        const writeups = await response.json();
+        writeupsCount = writeups.length;
+        featuredWriteups = writeups.filter((w: any) => w.featured).slice(0, 3);
+      }
+    } catch (error) {
+      console.error('Error loading writeups:', error);
+    }
   });
 
   const featuredProjects = projectsData.filter(p => p.featured).slice(0, 3);
-  const featuredWriteups = writeupsData.filter(w => w.featured).slice(0, 3);
 
   const skills = [
-    { name: 'Web Security', icon: '🔐' },
-    { name: 'Penetration Testing', icon: '🎯' },
-    { name: 'Network Security', icon: '🌐' },
-    { name: 'Linux', icon: '🐧' },
-    { name: 'Python', icon: '🐍' },
-    { name: 'Docker', icon: '🐳' }
+    { name: 'Web Security', icon: '&#x1F6E1;' },
+    { name: 'Penetration Testing', icon: '&#x1F3AF;' },
+    { name: 'Network Security', icon: '&#x1F310;' },
+    { name: 'Linux Systems', icon: '&#x1F427;' },
+    { name: 'Python', icon: '&#x1F40D;' },
+    { name: 'Docker', icon: '&#x1F433;' }
   ];
+
+  function getDifficultyColor(difficulty: string): string {
+    switch(difficulty) {
+      case 'Easy': return 'var(--color-success)';
+      case 'Medium': return 'var(--color-warning)';
+      case 'Hard': return 'var(--color-error)';
+      default: return 'var(--color-text-tertiary)';
+    }
+  }
 </script>
 
 <svelte:head>
@@ -32,84 +53,107 @@
 <Navbar />
 
 <main class="landing-page" class:visible>
+  <!-- Animated Background -->
+  <div class="cyber-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="scan-line"></div>
+  </div>
+
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="hero-container">
       <div class="hero-content">
-        <div class="hero-badge animate-fadeIn">
-          <span class="badge-dot"></span>
-          Available for security research & consulting
+        <div class="cyber-badge animate-fadeIn">
+          <span class="status-indicator"></span>
+          <span class="badge-text">SYSTEM_STATUS: ACTIVE</span>
         </div>
 
         <h1 class="hero-title animate-slideUp">
-          Security Researcher &<br />
-          <span class="text-gradient">Penetration Tester</span>
+          <span class="title-line">Security Researcher</span>
+          <span class="title-accent">&amp;</span>
+          <span class="title-gradient">Penetration Tester</span>
         </h1>
 
         <p class="hero-description animate-slideUp">
           Exploring vulnerabilities, building security tools, and documenting my journey
           through CTF challenges and real-world penetration testing. Passionate about
-          offensive security, automation, and sharing knowledge with the community.
+          offensive security, automation, and sharing knowledge.
         </p>
 
         <div class="hero-actions animate-slideUp">
-          <a href="/projects" class="btn btn-primary">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-            </svg>
-            View Projects
+          <a href="/projects" class="cyber-btn primary">
+            <span class="btn-bg"></span>
+            <span class="btn-content">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              View Projects
+            </span>
           </a>
-          <a href="/writeups" class="btn btn-secondary">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-            </svg>
-            Read Writeups
+          <a href="/writeups" class="cyber-btn secondary">
+            <span class="btn-border"></span>
+            <span class="btn-content">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              Read Writeups
+            </span>
           </a>
         </div>
 
-        <div class="hero-stats animate-fadeIn">
-          <div class="stat-item">
-            <span class="stat-value">{projectsData.length}+</span>
-            <span class="stat-label">Projects</span>
+        <div class="stats-container animate-fadeIn">
+          <div class="stat-card">
+            <span class="stat-value">{projectsData.length}</span>
+            <span class="stat-label">PROJECTS</span>
+            <div class="stat-glow"></div>
           </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-value">{writeupsData.length}+</span>
-            <span class="stat-label">Writeups</span>
+          <div class="stat-divider">
+            <span class="divider-line"></span>
           </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
+          <div class="stat-card">
+            <span class="stat-value">{writeupsCount}</span>
+            <span class="stat-label">WRITEUPS</span>
+            <div class="stat-glow"></div>
+          </div>
+          <div class="stat-divider">
+            <span class="divider-line"></span>
+          </div>
+          <div class="stat-card">
             <span class="stat-value">24/7</span>
-            <span class="stat-label">Learning</span>
+            <span class="stat-label">LEARNING</span>
+            <div class="stat-glow"></div>
           </div>
         </div>
       </div>
 
       <div class="hero-visual animate-fadeIn">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <div class="terminal-buttons">
-              <span class="btn-red"></span>
-              <span class="btn-yellow"></span>
-              <span class="btn-green"></span>
+        <div class="terminal-frame">
+          <div class="terminal-chrome">
+            <div class="terminal-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
             </div>
-            <span class="terminal-title">~/security/scanner.py</span>
+            <span class="terminal-title">root@kali:~/security</span>
           </div>
-          <div class="terminal-body">
+          <div class="terminal-screen">
             <div class="terminal-line">
               <span class="prompt">$</span>
-              <span class="command">python3 scanner.py --target 10.10.10.0/24</span>
+              <span class="command">./scanner.py --target 10.10.10.0/24</span>
             </div>
             <div class="terminal-output">
-              <span class="output-success">[+] Initiating network scan...</span>
-              <span class="output-info">[*] Scanning 256 hosts</span>
-              <span class="output-success">[+] Found 12 active hosts</span>
-              <span class="output-warning">[!] Detected open ports: 22, 80, 443</span>
-              <span class="output-success">[+] Vulnerabilities identified: 3 critical</span>
-              <span class="typing">_</span>
+              <span class="output-line success">[+] Initiating network scan...</span>
+              <span class="output-line info">[*] Scanning 256 hosts</span>
+              <span class="output-line success">[+] Found 12 active hosts</span>
+              <span class="output-line warning">[!] Detected open ports: 22, 80, 443</span>
+              <span class="output-line success">[+] Vulnerabilities identified: 3 critical</span>
+              <span class="cursor">_</span>
             </div>
           </div>
+          <div class="terminal-reflection"></div>
         </div>
       </div>
     </div>
@@ -119,18 +163,22 @@
   <section class="skills-section">
     <div class="section-container">
       <div class="section-header">
+        <div class="header-line left"></div>
         <h2 class="section-title">
-          <span class="title-icon">⚡</span>
-          Core Competencies
+          <span class="title-bracket">[</span>
+          CORE_SKILLS
+          <span class="title-bracket">]</span>
         </h2>
-        <p class="section-subtitle">Technologies and methodologies I work with daily</p>
+        <div class="header-line right"></div>
       </div>
 
       <div class="skills-grid">
         {#each skills as skill, i}
           <div class="skill-card" style="animation-delay: {i * 0.1}s">
-            <span class="skill-icon">{skill.icon}</span>
+            <div class="skill-icon">{@html skill.icon}</div>
             <span class="skill-name">{skill.name}</span>
+            <div class="skill-corner tl"></div>
+            <div class="skill-corner br"></div>
           </div>
         {/each}
       </div>
@@ -141,37 +189,45 @@
   <section class="featured-section">
     <div class="section-container">
       <div class="section-header">
+        <div class="header-line left"></div>
         <h2 class="section-title">
-          <span class="title-icon">🚀</span>
-          Featured Projects
+          <span class="title-bracket">[</span>
+          FEATURED_PROJECTS
+          <span class="title-bracket">]</span>
         </h2>
-        <p class="section-subtitle">Open-source tools and infrastructure projects</p>
-        <a href="/projects" class="section-link">
-          View all projects
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </a>
+        <div class="header-line right"></div>
       </div>
+      <p class="section-subtitle">Open-source security tools and infrastructure projects</p>
+      <a href="/projects" class="view-all-link">
+        View all projects
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
 
-      <div class="featured-grid">
+      <div class="projects-grid">
         {#each featuredProjects as project}
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="featured-card">
-            <div class="card-header">
-              <h3 class="card-title">{project.title}</h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="project-card">
+            <div class="card-glow"></div>
+            <div class="card-border"></div>
+            <div class="card-content">
+              <div class="card-header">
+                <h3 class="card-title">{project.title}</h3>
+                <svg class="external-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </div>
+              <p class="card-description">{project.description}</p>
+              <div class="card-tags">
+                {#each project.tags as tag}
+                  <span class="cyber-tag">{tag}</span>
+                {/each}
+              </div>
             </div>
-            <p class="card-description">{project.description}</p>
-            <div class="card-tags">
-              {#each project.tags as tag}
-                <span class="tag">#{tag}</span>
-              {/each}
-            </div>
+            <div class="card-scan-line"></div>
           </a>
         {/each}
       </div>
@@ -179,41 +235,59 @@
   </section>
 
   <!-- Featured Writeups Section -->
-  <section class="featured-section alt">
+  <section class="writeups-section">
     <div class="section-container">
       <div class="section-header">
+        <div class="header-line left"></div>
         <h2 class="section-title">
-          <span class="title-icon">📝</span>
-          Latest Writeups
+          <span class="title-bracket">[</span>
+          LATEST_WRITEUPS
+          <span class="title-bracket">]</span>
         </h2>
-        <p class="section-subtitle">Recent CTF challenges and penetration testing walkthroughs</p>
-        <a href="/writeups" class="section-link">
-          View all writeups
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </a>
+        <div class="header-line right"></div>
       </div>
+      <p class="section-subtitle">Recent CTF challenges and penetration testing walkthroughs</p>
+      <a href="/writeups" class="view-all-link">
+        View all writeups
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
 
-      <div class="writeups-list">
+      <div class="writeups-grid">
         {#each featuredWriteups as writeup}
-          <a href="/writeups/{writeup.slug}" class="writeup-item">
-            <div class="writeup-meta">
-              <span class="writeup-platform">{writeup.platform}</span>
-              <span class="writeup-difficulty" style="color: {
-                writeup.difficulty === 'Easy' ? 'var(--color-success)' :
-                writeup.difficulty === 'Medium' ? 'var(--color-warning)' :
-                'var(--color-error)'
-              }">{writeup.difficulty}</span>
+          <a href="/writeups/{writeup.slug}" class="writeup-card">
+            <div class="writeup-glow"></div>
+            <div class="writeup-border"></div>
+            <div class="writeup-content">
+              <div class="writeup-header">
+                <div class="writeup-badges">
+                  <span class="platform-badge">{writeup.platform}</span>
+                  <span class="difficulty-badge" style="--diff-color: {getDifficultyColor(writeup.difficulty)}">
+                    {writeup.difficulty}
+                  </span>
+                </div>
+                <div class="writeup-indicator"></div>
+              </div>
+              <h3 class="writeup-title">{writeup.title}</h3>
+              <p class="writeup-description">{writeup.description}</p>
+              <div class="writeup-tags">
+                {#each writeup.tags?.slice(0, 4) || [] as tag}
+                  <span class="cyber-tag-sm">{tag}</span>
+                {/each}
+              </div>
+              <div class="writeup-footer">
+                <span class="read-more">
+                  ACCESS_WRITEUP
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+              </div>
             </div>
-            <h3 class="writeup-title">{writeup.title}</h3>
-            <p class="writeup-description">{writeup.description}</p>
-            <div class="writeup-tags">
-              {#each writeup.tags.slice(0, 4) as tag}
-                <span class="tag-small">#{tag}</span>
-              {/each}
-            </div>
+            <div class="writeup-scan-line"></div>
           </a>
         {/each}
       </div>
@@ -223,19 +297,28 @@
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="cta-container">
+      <div class="cta-bg">
+        <div class="cta-grid"></div>
+      </div>
       <div class="cta-content">
-        <h2 class="cta-title">Let's Build Something Secure</h2>
+        <h2 class="cta-title">
+          <span class="title-bracket">[</span>
+          INITIATE_CONNECTION
+          <span class="title-bracket">]</span>
+        </h2>
         <p class="cta-description">
-          Interested in collaboration, security research, or just want to discuss
-          the latest vulnerabilities? I'm always open to connecting with fellow security enthusiasts.
+          Interested in collaboration, security research, or discussing the latest vulnerabilities?
+          Let's connect and build something secure together.
         </p>
         <div class="cta-actions">
-          <a href="#contact" class="btn btn-primary">Get in Touch</a>
-          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-            GitHub
+          <a href="https://github.com/zeratul" target="_blank" rel="noopener noreferrer" class="cyber-btn primary">
+            <span class="btn-bg"></span>
+            <span class="btn-content">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              GitHub Profile
+            </span>
           </a>
         </div>
       </div>
@@ -246,13 +329,83 @@
 <Footer />
 
 <style>
+  /* ===================================
+     Landing Page - Cyberpunk Theme
+     =================================== */
+
   .landing-page {
     opacity: 0;
     transition: opacity 0.6s ease;
+    position: relative;
+    overflow-x: hidden;
   }
 
   .landing-page.visible {
     opacity: 1;
+  }
+
+  /* Animated Background */
+  .cyber-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+  }
+
+  .orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+    top: -200px;
+    left: -200px;
+    animation: floatOrb 20s ease-in-out infinite;
+  }
+
+  .orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.25) 0%, transparent 70%);
+    bottom: -150px;
+    right: -150px;
+    animation: floatOrb 25s ease-in-out infinite reverse;
+  }
+
+  @keyframes floatOrb {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(50px, 50px) scale(1.1); }
+    50% { transform: translate(0, 100px) scale(0.9); }
+    75% { transform: translate(-50px, 50px) scale(1.05); }
+  }
+
+  .scan-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+    animation: scanDown 8s linear infinite;
+    opacity: 0.3;
+  }
+
+  @keyframes scanDown {
+    0% { top: -10%; }
+    100% { top: 110%; }
   }
 
   /* Hero Section */
@@ -261,9 +414,7 @@
     display: flex;
     align-items: center;
     padding: 6rem 0 4rem;
-    background:
-      radial-gradient(ellipse at top, rgba(83, 155, 245, 0.1) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(141, 219, 140, 0.05) 0%, transparent 50%);
+    position: relative;
   }
 
   .hero-container {
@@ -276,49 +427,96 @@
     align-items: center;
   }
 
-  .hero-badge {
+  /* Cyber Badge */
+  .cyber-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     padding: 0.5rem 1rem;
-    background: rgba(83, 155, 245, 0.1);
-    border: 1px solid rgba(83, 155, 245, 0.2);
-    border-radius: var(--radius-full);
-    font-size: 0.875rem;
-    font-family: var(--font-mono);
-    color: var(--color-accent-blue-light);
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 2px;
     margin-bottom: 2rem;
+    position: relative;
   }
 
-  .badge-dot {
+  .cyber-badge::before,
+  .cyber-badge::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--color-accent-blue);
+  }
+
+  .cyber-badge::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .cyber-badge::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+  }
+
+  .status-indicator {
     width: 8px;
     height: 8px;
     background: var(--color-success);
     border-radius: 50%;
+    box-shadow: 0 0 10px var(--color-success);
     animation: pulse 2s ease-in-out infinite;
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+  .badge-text {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-accent-blue-light);
+    letter-spacing: 0.1em;
   }
 
+  /* Hero Title */
   .hero-title {
     font-size: 3.5rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .title-line {
     color: var(--color-text-primary);
   }
 
+  .title-accent {
+    color: var(--color-accent-blue);
+    font-size: 2rem;
+    margin: 0.25rem 0;
+  }
+
+  .title-gradient {
+    background: linear-gradient(135deg, var(--color-accent-blue-light) 0%, var(--color-accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+  }
+
   .hero-description {
-    font-size: 1.125rem;
+    font-size: 1.1rem;
     line-height: 1.7;
     color: var(--color-text-tertiary);
     margin-bottom: 2.5rem;
-    max-width: 600px;
+    max-width: 550px;
   }
 
+  /* Cyber Buttons */
   .hero-actions {
     display: flex;
     gap: 1rem;
@@ -326,82 +524,236 @@
     flex-wrap: wrap;
   }
 
-  .hero-stats {
-    display: flex;
+  .cyber-btn {
+    position: relative;
+    display: inline-flex;
     align-items: center;
-    gap: 2rem;
+    padding: 0.875rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
   }
 
-  .stat-item {
+  .cyber-btn.primary {
+    background: transparent;
+    color: var(--color-bg-primary);
+  }
+
+  .cyber-btn.primary .btn-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--color-accent-blue) 0%, var(--color-accent-secondary) 100%);
+    z-index: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .cyber-btn.primary:hover .btn-bg {
+    transform: scale(1.05);
+  }
+
+  .cyber-btn.primary::before,
+  .cyber-btn.primary::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    z-index: 2;
+  }
+
+  .cyber-btn.primary::before {
+    top: 4px;
+    left: 4px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .cyber-btn.primary::after {
+    bottom: 4px;
+    right: 4px;
+    border-left: none;
+    border-top: none;
+  }
+
+  .cyber-btn.secondary {
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--color-accent-blue-light);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+  }
+
+  .cyber-btn.secondary:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: var(--color-accent-blue);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+
+  .cyber-btn.secondary .btn-border {
+    position: absolute;
+    inset: 0;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-secondary)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .cyber-btn.secondary:hover .btn-border {
+    opacity: 1;
+  }
+
+  .btn-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Stats Container */
+  .stats-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+  }
+
+  .stat-card::before,
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--color-accent-blue);
+  }
+
+  .stat-card::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .stat-card::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
   }
 
   .stat-value {
+    font-family: var(--font-mono);
     font-size: 1.75rem;
     font-weight: 700;
-    font-family: var(--font-mono);
-    background: linear-gradient(135deg, var(--color-accent-blue-light) 0%, var(--color-accent-green) 100%);
+    background: linear-gradient(135deg, var(--color-accent-blue-light) 0%, var(--color-accent-secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .stat-label {
-    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
     color: var(--color-text-muted);
+    letter-spacing: 0.15em;
+    margin-top: 0.25rem;
+  }
+
+  .stat-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .stat-card:hover .stat-glow {
+    opacity: 1;
   }
 
   .stat-divider {
+    display: flex;
+    align-items: center;
+    height: 40px;
+  }
+
+  .divider-line {
     width: 1px;
-    height: 2rem;
-    background: var(--color-border-default);
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(139, 92, 246, 0.5), transparent);
   }
 
   /* Terminal Visual */
   .hero-visual {
     position: relative;
+    perspective: 1000px;
   }
 
-  .terminal-window {
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+  .terminal-frame {
+    position: relative;
+    background: var(--color-bg-secondary);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: var(--shadow-2xl);
+    transform: rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.5s ease;
+    box-shadow:
+      0 0 0 1px rgba(139, 92, 246, 0.1),
+      0 20px 50px -10px rgba(0, 0, 0, 0.5),
+      0 0 100px -20px rgba(139, 92, 246, 0.3);
   }
 
-  .terminal-header {
+  .terminal-frame:hover {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+
+  .terminal-chrome {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 0.75rem 1rem;
-    background: var(--color-bg-elevated);
-    border-bottom: 1px solid var(--color-border-default);
+    background: rgba(139, 92, 246, 0.1);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
   }
 
-  .terminal-buttons {
+  .terminal-dots {
     display: flex;
-    gap: 0.5rem;
+    gap: 6px;
   }
 
-  .terminal-buttons span {
-    width: 12px;
-    height: 12px;
+  .dot {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
   }
 
-  .btn-red { background: #ff5f56; }
-  .btn-yellow { background: #ffbd2e; }
-  .btn-green { background: #27c93f; }
+  .dot.red { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green { background: #27c93f; }
 
   .terminal-title {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: var(--color-text-tertiary);
   }
 
-  .terminal-body {
+  .terminal-screen {
     padding: 1.5rem;
     font-family: var(--font-mono);
     font-size: 0.875rem;
@@ -417,7 +769,7 @@
   }
 
   .command {
-    color: var(--color-accent-green);
+    color: var(--color-accent-secondary);
   }
 
   .terminal-output {
@@ -426,36 +778,32 @@
     gap: 0.5rem;
   }
 
-  .output-success {
-    color: var(--color-success);
+  .output-line {
+    display: block;
   }
 
-  .output-info {
-    color: var(--color-accent-blue-light);
-  }
+  .output-line.success { color: var(--color-success); }
+  .output-line.info { color: var(--color-accent-blue-light); }
+  .output-line.warning { color: var(--color-warning); }
 
-  .output-warning {
-    color: var(--color-warning);
-  }
-
-  .typing {
+  .cursor {
     color: var(--color-accent-blue-light);
     animation: blink 1s step-end infinite;
   }
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+  .terminal-reflection {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    pointer-events: none;
   }
 
-  /* Sections */
+  /* Section Styles */
   .skills-section,
-  .featured-section {
+  .featured-section,
+  .writeups-section {
     padding: 6rem 0;
-  }
-
-  .featured-section.alt {
-    background: linear-gradient(180deg, transparent 0%, rgba(83, 155, 245, 0.03) 50%, transparent 100%);
+    position: relative;
   }
 
   .section-container {
@@ -465,132 +813,181 @@
   }
 
   .section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-    position: relative;
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
   }
 
-  .title-icon {
-    font-size: 2rem;
+  .header-line {
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5));
+  }
+
+  .header-line.right {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.5), transparent);
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    letter-spacing: 0.05em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .title-bracket {
+    color: var(--color-accent-blue);
   }
 
   .section-subtitle {
-    font-size: 1.125rem;
+    text-align: center;
     color: var(--color-text-tertiary);
-    max-width: 600px;
-    margin: 0 auto;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 
-  .section-link {
-    display: inline-flex;
+  .view-all-link {
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    margin-top: 1rem;
-    color: var(--color-accent-blue-light);
     font-family: var(--font-mono);
     font-size: 0.875rem;
-    transition: all var(--transition-base);
+    color: var(--color-accent-blue-light);
+    margin-bottom: 3rem;
+    transition: all 0.3s ease;
   }
 
-  .section-link:hover {
+  .view-all-link:hover {
     gap: 0.75rem;
+    color: var(--color-accent-secondary);
   }
 
   /* Skills Grid */
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1.5rem;
   }
 
   .skill-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     padding: 2rem 1.5rem;
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
-    transition: all var(--transition-base);
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    transition: all 0.3s ease;
     animation: fadeInUp 0.6s ease backwards;
   }
 
   .skill-card:hover {
-    border-color: var(--color-accent-blue);
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.4);
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.3);
+  }
+
+  .skill-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--color-accent-blue);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .skill-card:hover .skill-corner {
+    opacity: 1;
+  }
+
+  .skill-corner.tl {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .skill-corner.br {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
   }
 
   .skill-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .skill-name {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: var(--color-text-secondary);
+    text-align: center;
   }
 
-  /* Featured Grid */
-  .featured-grid {
+  /* Projects Grid */
+  .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
   }
 
-  .featured-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 2rem;
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+  .project-card {
+    position: relative;
+    display: block;
     text-decoration: none;
     color: inherit;
-    transition: all var(--transition-slow);
-    position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
   }
 
-  .featured-card::before {
-    content: '';
+  .project-card .card-glow {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--color-accent-blue) 0%, var(--color-accent-green) 100%);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--transition-slow);
+    inset: -2px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(6, 182, 212, 0.3));
+    filter: blur(15px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
   }
 
-  .featured-card:hover {
-    border-color: var(--color-accent-blue);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-xl);
+  .project-card:hover .card-glow {
+    opacity: 1;
   }
 
-  .featured-card:hover::before {
-    transform: scaleX(1);
+  .project-card .card-border {
+    position: absolute;
+    inset: 0;
+    background: var(--color-bg-tertiary);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    z-index: 1;
+    transition: border-color 0.3s ease;
+  }
+
+  .project-card:hover .card-border {
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+
+  .project-card .card-content {
+    position: relative;
+    z-index: 2;
+    padding: 1.75rem;
   }
 
   .card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    margin-bottom: 1rem;
   }
 
   .card-title {
@@ -599,13 +996,13 @@
     color: var(--color-text-primary);
   }
 
-  .card-header svg {
-    color: var(--color-text-tertiary);
-    transition: all var(--transition-base);
+  .external-icon {
+    color: var(--color-text-muted);
+    transition: all 0.3s ease;
     flex-shrink: 0;
   }
 
-  .featured-card:hover .card-header svg {
+  .project-card:hover .external-icon {
     color: var(--color-accent-blue-light);
     transform: translate(2px, -2px);
   }
@@ -613,6 +1010,8 @@
   .card-description {
     color: var(--color-text-tertiary);
     line-height: 1.6;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
   }
 
   .card-tags {
@@ -621,132 +1020,296 @@
     gap: 0.5rem;
   }
 
-  /* Writeups List */
-  .writeups-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  .cyber-tag {
+    padding: 0.3rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    transition: all 0.3s ease;
   }
 
-  .writeup-item {
+  .cyber-tag:hover {
+    color: var(--color-accent-blue-light);
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+
+  .card-scan-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-blue), transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    z-index: 3;
+  }
+
+  .project-card:hover .card-scan-line {
+    transform: scaleX(1);
+  }
+
+  /* Writeups Grid */
+  .writeups-grid {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border-default);
-    border-left: 3px solid transparent;
-    border-radius: var(--radius-lg);
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+  }
+
+  .writeup-card {
+    position: relative;
+    display: block;
     text-decoration: none;
     color: inherit;
-    transition: all var(--transition-base);
+    overflow: hidden;
+    transition: all 0.3s ease;
   }
 
-  .writeup-item:hover {
-    border-left-color: var(--color-accent-blue);
-    background: var(--color-bg-elevated);
-    transform: translateX(4px);
+  .writeup-card .writeup-glow {
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(6, 182, 212, 0.25));
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
   }
 
-  .writeup-meta {
+  .writeup-card:hover .writeup-glow {
+    opacity: 1;
+  }
+
+  .writeup-card .writeup-border {
+    position: absolute;
+    inset: 0;
+    background: var(--color-bg-tertiary);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  .writeup-card:hover .writeup-border {
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+
+  .writeup-card .writeup-content {
+    position: relative;
+    z-index: 2;
+    padding: 1.75rem;
+  }
+
+  .writeup-header {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 120px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
   }
 
-  .writeup-platform,
-  .writeup-difficulty {
+  .writeup-badges {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .platform-badge {
+    padding: 0.35rem 0.75rem;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--radius-sm);
-    text-align: center;
-  }
-
-  .writeup-platform {
-    background: rgba(83, 155, 245, 0.1);
-    color: var(--color-accent-blue-light);
-    border: 1px solid rgba(83, 155, 245, 0.2);
-  }
-
-  .writeup-difficulty {
-    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.7rem;
     font-weight: 600;
+    color: var(--color-accent-blue-light);
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    letter-spacing: 0.05em;
+  }
+
+  .difficulty-badge {
+    padding: 0.35rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--diff-color);
+    background: color-mix(in srgb, var(--diff-color) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--diff-color) 40%, transparent);
+    letter-spacing: 0.05em;
+  }
+
+  .writeup-indicator {
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent-blue);
+    box-shadow: 0 0 10px var(--color-accent-blue);
+    animation: pulse 2s ease-in-out infinite;
   }
 
   .writeup-title {
-    font-size: 1.125rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--color-text-primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
   }
 
   .writeup-description {
     color: var(--color-text-tertiary);
     font-size: 0.9rem;
     line-height: 1.6;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .writeup-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-bottom: 1.25rem;
   }
 
-  .tag-small {
+  .cyber-tag-sm {
+    padding: 0.2rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  .writeup-footer {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(139, 92, 246, 0.1);
+  }
+
+  .read-more {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--color-text-muted);
+    color: var(--color-accent-blue-light);
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+  }
+
+  .writeup-card:hover .read-more {
+    gap: 0.75rem;
+    color: var(--color-accent-secondary);
+  }
+
+  .writeup-scan-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-secondary), transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    z-index: 3;
+  }
+
+  .writeup-card:hover .writeup-scan-line {
+    transform: scaleX(1);
   }
 
   /* CTA Section */
   .cta-section {
     padding: 6rem 0;
-    background: linear-gradient(135deg, rgba(83, 155, 245, 0.1) 0%, rgba(141, 219, 140, 0.05) 100%);
-    border-top: 1px solid var(--color-border-default);
-    border-bottom: 1px solid var(--color-border-default);
+    position: relative;
   }
 
   .cta-container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 4rem 3rem;
+    position: relative;
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    overflow: hidden;
+  }
+
+  .cta-container::before,
+  .cta-container::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-accent-blue);
+  }
+
+  .cta-container::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .cta-container::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .cta-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
   }
 
   .cta-content {
+    position: relative;
     text-align: center;
+    z-index: 1;
   }
 
   .cta-title {
-    font-size: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    color: var(--color-text-primary);
   }
 
   .cta-description {
-    font-size: 1.125rem;
+    font-size: 1.1rem;
     line-height: 1.7;
     color: var(--color-text-tertiary);
-    margin-bottom: 2.5rem;
-    max-width: 700px;
+    margin-bottom: 2rem;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
   }
 
   .cta-actions {
     display: flex;
-    gap: 1rem;
     justify-content: center;
+    gap: 1rem;
     flex-wrap: wrap;
   }
 
   /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
     }
     to {
       opacity: 1;
@@ -762,17 +1325,9 @@
     animation: fadeInUp 0.8s ease backwards;
   }
 
-  .animate-slideUp:nth-child(2) {
-    animation-delay: 0.1s;
-  }
-
-  .animate-slideUp:nth-child(3) {
-    animation-delay: 0.2s;
-  }
-
-  .animate-slideUp:nth-child(4) {
-    animation-delay: 0.3s;
-  }
+  .animate-slideUp:nth-child(2) { animation-delay: 0.1s; }
+  .animate-slideUp:nth-child(3) { animation-delay: 0.2s; }
+  .animate-slideUp:nth-child(4) { animation-delay: 0.3s; }
 
   /* Responsive */
   @media (max-width: 1024px) {
@@ -785,7 +1340,17 @@
       font-size: 2.75rem;
     }
 
-    .featured-grid {
+    .hero-visual {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .terminal-frame {
+      transform: none;
+    }
+
+    .projects-grid,
+    .writeups-grid {
       grid-template-columns: 1fr;
     }
   }
@@ -803,35 +1368,48 @@
       font-size: 1rem;
     }
 
-    .section-title {
-      font-size: 2rem;
-    }
-
-    .skills-grid {
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-
-    .writeup-item {
-      grid-template-columns: 1fr;
-    }
-
-    .writeup-meta {
-      flex-direction: row;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .hero-stats {
+    .stats-container {
       flex-wrap: wrap;
-      gap: 1.5rem;
+      justify-content: center;
     }
 
     .stat-divider {
       display: none;
     }
 
+    .section-title {
+      font-size: 1.25rem;
+    }
+
+    .skills-grid {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .cta-container {
+      padding: 3rem 1.5rem;
+    }
+
     .cta-title {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .cyber-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .writeups-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .writeups-grid .writeup-card {
+      min-width: 0;
     }
   }
 </style>

@@ -5,7 +5,7 @@ import { parseFrontmatter, getSlugFromFilename } from '$lib/utils/frontmatter';
 export const GET: RequestHandler = async () => {
   try {
     // In production, we need to use import.meta.glob to get static files
-    const modules = import.meta.glob('/static/homelab-content/*.md', { as: 'raw', eager: true });
+    const modules = import.meta.glob('/static/homelab-content/*.md', { query: '?raw', import: 'default', eager: true });
 
     const homelabs = Object.entries(modules).map(([filepath, content]) => {
       const filename = filepath.split('/').pop() || '';
