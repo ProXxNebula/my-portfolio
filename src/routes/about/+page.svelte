@@ -612,4 +612,43 @@
       font-size: 1.35rem;
     }
   }
+
+  /* Light Mode Overrides */
+  :global(:root[data-theme="light"]) .main-card {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .info-card {
+    background: var(--color-bg-secondary);
+    border-color: rgba(124, 58, 237, 0.12);
+  }
+
+  :global(:root[data-theme="light"]) .info-card:hover {
+    border-color: rgba(124, 58, 237, 0.35);
+  }
+
+  :global(:root[data-theme="light"]) .sidebar-card {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .disclaimer-card {
+    background: rgba(255, 107, 107, 0.05);
+    border-color: rgba(255, 107, 107, 0.25);
+  }
+
+  :global(:root[data-theme="light"]) .card-icon {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(8, 145, 178, 0.1) 100%);
+    border-color: rgba(124, 58, 237, 0.25);
+  }
+
+  :global(:root[data-theme="light"]) .info-icon {
+    background: rgba(124, 58, 237, 0.08);
+  }
+
+  :global(:root[data-theme="light"]) .stat-card {
+    background: rgba(124, 58, 237, 0.05);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
 </style>

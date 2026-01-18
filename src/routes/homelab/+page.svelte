@@ -1139,4 +1139,57 @@
     font-family: var(--font-mono);
     padding: 0 0.5rem;
   }
+
+  /* Light Mode Overrides */
+  :global(:root[data-theme="light"]) .category-btn {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.2);
+    color: var(--color-text-tertiary);
+  }
+
+  :global(:root[data-theme="light"]) .category-btn:hover {
+    border-color: var(--color-accent-primary);
+    color: var(--color-text-primary);
+  }
+
+  :global(:root[data-theme="light"]) .category-btn.active {
+    background: rgba(124, 58, 237, 0.1);
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+  }
+
+  :global(:root[data-theme="light"]) .stat-card {
+    background: rgba(124, 58, 237, 0.05);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .section-title {
+    color: var(--color-text-primary);
+  }
+
+  :global(:root[data-theme="light"]) .pagination-btn {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.2);
+    color: var(--color-text-secondary);
+  }
+
+  :global(:root[data-theme="light"]) .pagination-btn:hover:not(:disabled) {
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+  }
+
+  :global(:root[data-theme="light"]) .pagination-btn.active {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    color: white;
+  }
+
+  :global(:root[data-theme="light"]) .homelab-card .card-border {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .homelab-card:hover .card-border {
+    border-color: rgba(124, 58, 237, 0.4);
+  }
 </style>

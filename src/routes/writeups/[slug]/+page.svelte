@@ -1041,4 +1041,64 @@
       align-items: flex-start;
     }
   }
+
+  /* Light Mode Overrides */
+  :global(:root[data-theme="light"]) .writeup-header {
+    background: linear-gradient(180deg, rgba(124, 58, 237, 0.05) 0%, rgba(8, 145, 178, 0.02) 50%, transparent 100%);
+    border-bottom-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .toc-sidebar {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .writeup-content {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.12);
+  }
+
+  :global(:root[data-theme="light"]) .writeup-footer {
+    background: var(--color-bg-secondary);
+    border-top-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .platform-badge,
+  :global(:root[data-theme="light"]) .category-badge {
+    background: rgba(124, 58, 237, 0.08);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .reading-time-badge {
+    background: rgba(8, 145, 178, 0.08);
+    border-color: rgba(8, 145, 178, 0.2);
+  }
+
+  :global(:root[data-theme="light"]) .tag {
+    background: rgba(124, 58, 237, 0.06);
+    border-color: rgba(124, 58, 237, 0.12);
+  }
+
+  :global(:root[data-theme="light"]) .tag:hover {
+    background: rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.25);
+  }
+
+  :global(:root[data-theme="light"]) .back-btn {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .focus-mode-toggle {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .toc-item:hover {
+    background: rgba(124, 58, 237, 0.06);
+  }
+
+  :global(:root[data-theme="light"]) .toc-item.active {
+    background: rgba(124, 58, 237, 0.08);
+  }
 </style>

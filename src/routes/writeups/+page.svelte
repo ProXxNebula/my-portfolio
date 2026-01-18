@@ -1089,6 +1089,78 @@
     }
   }
 
+  /* Light Mode Overrides */
+  :global(:root[data-theme="light"]) .filters-section {
+    background: rgba(248, 247, 252, 0.95);
+    border-top-color: rgba(124, 58, 237, 0.15);
+    border-bottom-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .platform-tab {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.2);
+    color: var(--color-text-tertiary);
+  }
+
+  :global(:root[data-theme="light"]) .platform-tab:hover {
+    border-color: var(--color-accent-primary);
+    color: var(--color-text-primary);
+  }
+
+  :global(:root[data-theme="light"]) .platform-tab.active {
+    background: rgba(124, 58, 237, 0.1);
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+  }
+
+  :global(:root[data-theme="light"]) .search-input {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.2);
+    color: var(--color-text-primary);
+  }
+
+  :global(:root[data-theme="light"]) .search-input:focus {
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  }
+
+  :global(:root[data-theme="light"]) .filter-select {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.2);
+    color: var(--color-text-primary);
+  }
+
+  :global(:root[data-theme="light"]) .filter-select:focus,
+  :global(:root[data-theme="light"]) .filter-select:hover {
+    border-color: var(--color-accent-primary);
+  }
+
+  :global(:root[data-theme="light"]) .stat-card {
+    background: rgba(124, 58, 237, 0.05);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .section-title {
+    color: var(--color-text-primary);
+  }
+
+  :global(:root[data-theme="light"]) .pagination-btn {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.2);
+    color: var(--color-text-secondary);
+  }
+
+  :global(:root[data-theme="light"]) .pagination-btn:hover:not(:disabled) {
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+  }
+
+  :global(:root[data-theme="light"]) .pagination-btn.active {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    color: white;
+  }
+
   /* Pagination Styles */
   .pagination {
     display: flex;

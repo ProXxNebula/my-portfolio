@@ -1528,4 +1528,59 @@
       padding: 1.5rem 1rem;
     }
   }
+
+  /* Light Mode Overrides */
+  :global(:root[data-theme="light"]) .skill-card {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .skill-card:hover {
+    border-color: rgba(124, 58, 237, 0.4);
+  }
+
+  :global(:root[data-theme="light"]) .stat-card {
+    background: rgba(124, 58, 237, 0.05);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .cta-container {
+    background: rgba(124, 58, 237, 0.03);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .terminal-frame {
+    background: linear-gradient(135deg, #1a1a2e 0%, #1e1e30 100%);
+    border-color: rgba(124, 58, 237, 0.3);
+  }
+
+  :global(:root[data-theme="light"]) .terminal-header {
+    background: linear-gradient(180deg, rgba(40, 40, 60, 1) 0%, rgba(30, 30, 48, 1) 100%);
+  }
+
+  :global(:root[data-theme="light"]) .project-card .card-border {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .project-card:hover .card-border {
+    border-color: rgba(124, 58, 237, 0.4);
+  }
+
+  :global(:root[data-theme="light"]) .writeup-card {
+    background: var(--color-bg-elevated);
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  :global(:root[data-theme="light"]) .writeup-card:hover {
+    border-color: rgba(124, 58, 237, 0.4);
+  }
+
+  :global(:root[data-theme="light"]) .section-header .header-line.left {
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.4));
+  }
+
+  :global(:root[data-theme="light"]) .section-header .header-line.right {
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.4), transparent);
+  }
 </style>
