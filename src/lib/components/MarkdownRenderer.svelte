@@ -27,6 +27,21 @@
       highlighted = highlighted.replace(/(\s-+[\w-]+)/g, '<span class="flag">$1</span>');
     }
 
+    // PowerShell highlighting
+    if (lang === 'powershell' || lang === 'ps1' || lang === 'pwsh') {
+      // Comments
+      highlighted = highlighted.replace(/(#.*$)/gm, '<span class="comment">$1</span>');
+      // Strings
+      highlighted = highlighted.replace(/(&quot;[^&]*&quot;|&#39;[^&]*&#39;)/g, '<span class="string">$1</span>');
+      // Cmdlets and common commands
+      highlighted = highlighted.replace(/\b(Get-|Set-|New-|Remove-|Add-|Clear-|Write-|Read-|Out-|Import-|Export-|Start-|Stop-|Invoke-|Test-|Enable-|Disable-|Select-|Where-|ForEach-|Sort-|Group-|Format-|ConvertTo-|ConvertFrom-)\w+/g, '<span class="function">$1</span>');
+      highlighted = highlighted.replace(/\b(dir|cd|ls|cat|echo|type|cls|pwd|copy|move|del|rm|mkdir|rmdir|pushd|popd|whoami|hostname|ipconfig|netstat)\b/gi, '<span class="keyword">$1</span>');
+      // Variables
+      highlighted = highlighted.replace(/(\$[\w]+)/g, '<span class="variable">$1</span>');
+      // Flags/Parameters
+      highlighted = highlighted.replace(/(\s-+[\w]+)/g, '<span class="flag">$1</span>');
+    }
+
     // Python highlighting
     if (lang === 'python' || lang === 'py') {
       // Comments
@@ -298,7 +313,7 @@
   }
 
   .markdown-content :global(.comment) {
-    color: #6a737d;
+    color: #8b949e;
     font-style: italic;
   }
 
